@@ -1,0 +1,19 @@
+{
+  "name": "cse312-project",
+  "version": "1.0.0",
+  "description": "Final Project for CSE 312",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lyao4321/CSE312-Project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lyao4321/CSE312-Project/issues"
+  },
+  "homepage": "https://github.com/lyao4321/CSE312-Project#readme"
+}
