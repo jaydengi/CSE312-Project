@@ -1,7 +1,7 @@
 {
   "name": "cse312-project",
   "version": "1.0.0",
-  "description": "Final Project for CSE 312",
+  "description": "Final Project for CSE 312: Ecommerce Site",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
