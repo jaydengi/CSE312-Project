@@ -7,6 +7,8 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded())
 
+const mongoose = require('mongoose');
+
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = "mongodb+srv://lyao4321:@cse312user.nfiuxfr.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
@@ -16,6 +18,14 @@ client.connect(err => {
   client.close();
 });
 
+
+main().catch(err => console.log(err));
+
+async function main() {
+  const uri = "mongodb+srv://lyao4321:@cse312user.nfiuxfr.mongodb.net/?retryWrites=true&w=majority";
+  await mongoose.connect(uri);
+  
+}
 
 app.post("/info", async (req,res) => {
   const account = await client.db("cse312USER").insert(req.body)
