@@ -29,5 +29,12 @@ router.get('/shopping-cart', function(req, res) {
     });
 });
 
+// Registration Page
+router.get('/register', function(req, res) {
+    res.render('register', {
+        title: 'Register'
+    });
+});
+
 // Exports
 module.exports = router;
