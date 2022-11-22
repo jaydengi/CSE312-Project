@@ -22,5 +22,20 @@ router.get('/items', function(req, res) {
     });
 });
 
+// Item Listings Page
+router.get('/items', function(req, res) {
+    res.render('items', {
+        title: 'Item Listings'
+    });
+});
+
+// Item Listings Page
+router.get('/shopping-cart', function(req, res) {
+    res.render('shoppingcart', {
+        title: 'Shopping Cart'
+    });
+});
+
+
 // Exports
 module.exports = router;
