@@ -36,5 +36,12 @@ router.get('/register', function(req, res) {
     });
 });
 
+// Add Item Page
+router.get('/add-item', function(req, res) {
+    res.render('additem', {
+        title: 'Add Item'
+    });
+});
+
 // Exports
 module.exports = router;
