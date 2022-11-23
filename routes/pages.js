@@ -36,5 +36,10 @@ router.get('/register', function(req, res) {
     });
 });
 
+router.post('/register', function(req, res) {
+    console.log("TESTING!!!!")
+    res.send('TESTING!!!!');
+})
+
 // Exports
 module.exports = router;
