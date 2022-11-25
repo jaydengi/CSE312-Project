@@ -38,6 +38,10 @@ router.get('/register', function(req, res) {
 
 router.post('/register', function(req, res) {
     console.log("TESTING!!!!")
+    let username = req.body.username
+	let password = req.body.password
+    console.log("username: " + username)
+    console.log("password: " + password)
     res.send('TESTING!!!!');
 })
 
