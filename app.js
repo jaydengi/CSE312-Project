@@ -11,7 +11,7 @@ db.once('open', function() {
 });
 
 // Init app
-var app = express();
+const app = express();
 
 // View engine setup
 app.set('views', path.join(__dirname, 'views'));

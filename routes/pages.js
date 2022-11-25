@@ -1,5 +1,9 @@
 var express = require('express');
 var router = express.Router();
+var bodyParser = require('body-parser')
+//var jsonParser = bodyParser.json()
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
+
 
 // Homepage
 router.get('/', function(req, res) {
@@ -36,12 +40,11 @@ router.get('/register', function(req, res) {
     });
 });
 
-router.post('/register', function(req, res) {
+router.post('/register', urlencodedParser, function(req, res) {
     console.log("TESTING!!!!")
-    let username = req.body.username
-	let password = req.body.password
-    console.log("username: " + username)
-    console.log("password: " + password)
+    const {username, password} = req.body
+    console.log("username is: " + username)
+    console.log("password is: " + password)
     res.send('TESTING!!!!');
 })
 
