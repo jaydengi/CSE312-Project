@@ -4,33 +4,29 @@
   <%- include('head'); %>
 </head>
 <body class="container">
-
 <header>
   <%- include('header'); %>
 </header>
-
 <main>
   <div class="jumbotron">
     <h1>List Item</h1>
-    <form method="POST" action="" id="itemform">
+    <form method="POST" action="/item-added" id="itemform">
         <!-- user input-->
         Item name:<br>
-        <input type="text" name="itemname" placeholder="apple" required><br>
+        <input type="text" name="itemname" id="itemname" placeholder="apple" required><br>
         Sell price:<br>
-        <input type="text" name="price" placeholder="1.00" required><br>
+        <input type="text" name="price" id="price" placeholder="1.00" required><br>
         Description:<br>
-        <textarea rows="4" cols="50" name="description" form="itemform" placeholder="An edible fruit produced by an apple tree." required></textarea><br>
+        <textarea rows="4" cols="50" name="description" id="description" form="itemform" placeholder="An edible fruit produced by an apple tree." required></textarea><br>
         <label for="imagefile">Image: </label>
-        <input id="imagefile" type="file" name="upload"><br><br><br>
+        <input id="imagefile" type="file" name="imagefile"><br><br><br>
         <!-- submit button -->
         <input type="submit" value="confirm">
     </form>
   </div>
 </main>
-
 <footer>
   <%- include('footer'); %>
 </footer>
-
 </body>
 </html>
