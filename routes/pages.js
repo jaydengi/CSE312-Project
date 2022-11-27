@@ -33,6 +33,13 @@ router.get('/shopping-cart', function(req, res) {
     });
 });
 
+// Add Item Page
+router.get('/add-item', function(req, res) {
+    res.render('additem', {
+        title: 'Add Item'
+    });
+});
+
 // Registration Page
 router.get('/register', function(req, res) {
     res.render('register', {
