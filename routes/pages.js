@@ -25,7 +25,7 @@ itemModel = mongoose.model('item', itemSchema);
 var upload = multer ({
     storage : multer.diskStorage ({
         destination: (req, file, cb)=>{
-            cb (null, '/usr/src/app/public/uploads')
+            cb (null, '/usr/src/app/uploads')
         },
         filename : function (req, file, callback) {
             callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
@@ -72,7 +72,7 @@ router.get('/add-item', function(req, res) {
     });
 });
 router.post('/post', upload.single('image'), (req, res) => {
-    console.log(req.file);
+    console.log("file:", req.file);
     var temp = new itemModel();
     temp.name = req.body.name;
     temp.price = req.body.price;
