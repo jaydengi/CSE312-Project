@@ -20,6 +20,8 @@ services:
       NAME: idk
     depends_on:
       - mongo_db
+    volumes:
+      - ./uploads/:/usr/src/app/public/uploads
 
 volumes:
   mongo_db: {}

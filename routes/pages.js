@@ -25,7 +25,7 @@ itemModel = mongoose.model('item', itemSchema);
 var upload = multer ({
     storage : multer.diskStorage ({
         destination: (req, file, cb)=>{
-            cb (null, 'uploads/')
+            cb (null, '/usr/src/app/public/uploads')
         },
         filename : function (req, file, callback) {
             callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
