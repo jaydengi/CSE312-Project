@@ -7,16 +7,12 @@ services:
     restart: always
     volumes:
       - mongo_db:/data/db
-    # ports:
-    #   - 27017:27017
 
   # Node API service
   api:
     build: .
     ports:
       - '3000:3000'
-    # environment:
-    #   WAIT_HOSTS: mongo:27017
     environment:
       PORT: 3000
       MONGODB_URI: mongodb://mongo_db:27017

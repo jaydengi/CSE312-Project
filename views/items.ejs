@@ -15,7 +15,20 @@
     <a class="nav-link" href="/add-item">List item</a>
   </div>
   <div>
-    
+    <div>
+        <% item.forEach(function(item) { %>
+        <div>
+            <div>
+                <img src="%=item.img%">
+                <div>
+                    <h5><%= item.name %></h5>
+                    <p><%= item.price %></p>
+                    <p><%= item.description %></p>
+                </div>
+            </div>
+        </div>
+        <% }) %>
+    </div>
   </div>
 </main>
 <footer>
