@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('head'); %>
+</head>
+<body class="container">
+
+<header>
+  <%- include('header'); %>
+</header>
+<main>
+  <div class="jumbotron">
+    <h1>Item Listings</h1>
+    <a class="nav-link" href="/add-item">List item</a>
+    <% item.forEach(function(item) { %>
+      <div>
+          <div>
+              <img src="<%=item.img%>" height="250">
+              <div>
+                  <h5><%= item.name %></h5>
+                  <p><%= item.price %></p>
+                  <p><%= item.description %></p><br>
+              </div>
+          </div>
+      </div>
+      <% }) %>
+  </div>
+</main>
+<footer>
+    <%- include('footer'); %>
+</footer>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('head'); %>
+</head>
+<body class="container">
+<header>
+  <%- include('header'); %>
+</header>
+<main>
+  <div class="jumbotron">
+    <h1>List Item</h1>
+    <form method="POST" action="/post" id="itemform" enctype="multipart/form-data">
+        <!-- user input-->
+        Item name:<br>
+        <input type="text" name="name" id="name" placeholder="apple" required><br>
+        Sell price:<br>
+        <input type="text" name="price" id="price" placeholder="1.00" required><br>
+        Description:<br>
+        <textarea rows="4" cols="50" name="description" id="description" form="itemform" placeholder="An edible fruit produced by an apple tree." required></textarea><br>
+        <label for="image">Image: </label>
+        <input id="image" type="file" name="image"><br><br><br>
+        <!-- submit button -->
+        <input type="submit" value="confirm">
+    </form>
+  </div>
+</main>
+<footer>
+  <%- include('footer'); %>
+</footer>
+</body>
+</html>
