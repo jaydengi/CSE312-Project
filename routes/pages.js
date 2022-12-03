@@ -124,5 +124,30 @@ router.get('/login', function(req, res) {
     });
 });
 
+router.post('/login', urlencodedParser, function(req, res) { 
+    const {username, password} = req.body
+    loginModel.findOne({ username : username }, function(err, user) { 
+        if (user === null) { 
+            res.send("User not found!")
+        } 
+        else { 
+            var salt = user['salt']
+            if (crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex') === user['password']) {
+                console.log("Succesfully Logged In!")
+                //Make an authentication cookie
+                res.redirect('/items')
+            }
+            else {
+                res.send("Wrong Password!")
+            }
+        } 
+    }); 
+}); 
+
+//Make post request for login
+//Search database for the username and password 
+//If they match make a authentication cookie and send to item listing page
+//If not say wrong login information and send 
+
 // Exports
 module.exports = router;
