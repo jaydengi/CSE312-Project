@@ -101,15 +101,12 @@ router.get('/register', function(req, res) {
 
 router.post('/register', urlencodedParser, function(req, res) {
     const {username, password} = req.body
-    //console.log("username is: " + username)
-    //console.log("password is: " + password)
-    console.log(crypto.randomBytes(16).toString('hex'))
-    console.log(typeof crypto.randomBytes(16).toString('hex'))
+    var salt = crypto.randomBytes(16).toString('hex')
     var login_db = new loginModel();
     login_db.username = username;
-    login_db.salt = crypto.randomBytes(16).toString('hex');
-    login_db.password = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512').toString('hex'); ;
-    temp.save((err, doc)=>{
+    login_db.salt = salt;
+    login_db.password = crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex');
+    login_db.save((err, doc)=>{
         if (!err) {
             console.log("New Account Info Succesully Added!");
             res.redirect('/login');
