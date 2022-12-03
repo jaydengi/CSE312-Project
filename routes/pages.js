@@ -5,6 +5,7 @@ var path = require('path');
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 var mongoose = require('mongoose');
 var multer = require('multer');
+var crypto = require('crypto');
 require('dotenv/config');
 
 // Item schema
@@ -20,6 +21,14 @@ var itemSchema = new mongoose.Schema({
     // }
 });
 itemModel = mongoose.model('item', itemSchema);
+
+//Login Schema
+const loginSchema = new mongoose.Schema({
+    username: String,
+    salt: String,
+    password: String
+});
+loginModel = mongoose.model('login', loginSchema);
 
 // Multer setup
 var upload = multer ({
@@ -91,11 +100,24 @@ router.get('/register', function(req, res) {
 });
 
 router.post('/register', urlencodedParser, function(req, res) {
-    console.log("TESTING!!!!")
     const {username, password} = req.body
-    console.log("username is: " + username)
-    console.log("password is: " + password)
-    res.send('TESTING!!!!');
+    //console.log("username is: " + username)
+    //console.log("password is: " + password)
+    console.log(crypto.randomBytes(16).toString('hex'))
+    console.log(typeof crypto.randomBytes(16).toString('hex'))
+    var login_db = new loginModel();
+    login_db.username = username;
+    login_db.salt = crypto.randomBytes(16).toString('hex');
+    login_db.password = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512').toString('hex'); ;
+    temp.save((err, doc)=>{
+        if (!err) {
+            console.log("New Account Info Succesully Added!");
+            res.redirect('/login');
+        }
+        else {
+            console.log(err);
+        }
+    })
 })
 
 //Login Page
