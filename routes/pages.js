@@ -40,13 +40,6 @@ router.get('/', function(req, res) {
     });
 });
 
-// Login Page
-router.get('/login', function(req, res) {
-    res.render('login', {
-        title: 'Login'
-    });
-});
-
 // Item Listings Page
 router.get('/items', function(req, res) {
     itemModel.find()
@@ -71,6 +64,7 @@ router.get('/add-item', function(req, res) {
         title: 'Add Item'
     });
 });
+
 router.post('/post', upload.single('image'), (req, res) => {
     console.log("file:", req.file);
     var temp = new itemModel();
@@ -103,6 +97,13 @@ router.post('/register', urlencodedParser, function(req, res) {
     console.log("password is: " + password)
     res.send('TESTING!!!!');
 })
+
+//Login Page
+router.get('/login', function(req, res) {
+    res.render('login', {
+        title: 'Login'
+    });
+});
 
 // Exports
 module.exports = router;
