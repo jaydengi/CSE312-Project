@@ -35,6 +35,7 @@ app.use(express.static(path.join(__dirname, 'uploads')));
 var pages = require('./routes/pages.js');
 app.use('/', pages);
 app.use('/add-item', pages);
+app.use('/add-auction', pages);
 
 // Start the server
 var port = 3000;

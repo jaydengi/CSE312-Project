@@ -12,8 +12,9 @@
   <div class="jumbotron">
     <h1>Item Listings</h1>
     <a class="nav-link" href="/add-item">List item</a>
-    <% item.forEach(function(item) { %>
-      <div>
+
+      <div id="items-div">
+        <% item.forEach(function(item) { %>
           <div>
               <img src="<%=item.img%>" height="250">
               <div>
@@ -22,8 +23,9 @@
                   <p><%= item.description %></p><br>
               </div>
           </div>
+          <% }) %>
       </div>
-      <% }) %>
+      
   </div>
 </main>
 <footer>

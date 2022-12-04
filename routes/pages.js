@@ -14,11 +14,6 @@ var itemSchema = new mongoose.Schema({
     price: Number,
     description: String,
     img: String
-    // img:
-    // {
-    //     data: Buffer,
-    //     contentType: String
-    // }
 });
 itemModel = mongoose.model('item', itemSchema);
 
@@ -29,6 +24,15 @@ const loginSchema = new mongoose.Schema({
     password: String
 });
 loginModel = mongoose.model('login', loginSchema);
+
+// Auction schema
+var auctionSchema = new mongoose.Schema({
+    name: String,
+    initialbid: Number,
+    description: String,
+    img: String
+});
+auctionModel = mongoose.model('auction', auctionSchema);
 
 // Multer setup
 var upload = multer ({
@@ -74,14 +78,15 @@ router.get('/add-item', function(req, res) {
     });
 });
 
-router.post('/post', upload.single('image'), (req, res) => {
-    console.log("file:", req.file);
-    var temp = new itemModel();
-    temp.name = req.body.name;
-    temp.price = req.body.price;
-    temp.description = req.body.description;
-    temp.img = req.file.filename;
-    temp.save((err, doc)=>{
+// Post Item
+router.post('/post-item', upload.single('image'), (req, res) => {
+    var item = new itemModel();
+    item.name = req.body.name;
+    item.price = req.body.price;
+    item.description = req.body.description;
+    item.img = req.file.filename;
+    console.log("item:", item);
+    item.save((err, doc)=>{
         if (!err) {
             console.log("Item saved successfully");
             res.redirect('/items');
@@ -148,6 +153,43 @@ router.post('/login', urlencodedParser, function(req, res) {
 //Search database for the username and password 
 //If they match make a authentication cookie and send to item listing page
 //If not say wrong login information and send 
+
+// Auctions Page
+router.get('/auctions', function(req, res) {
+    auctionModel.find()
+        .then(function(doc){
+            res.render('auctions', {
+                title: 'Auctions',
+                auction : doc
+            })
+        })
+});
+
+// Add auction Page
+router.get('/add-auction', function(req, res) {
+    res.render('addauction', {
+        title: 'Add Auction'
+    });
+});
+
+// Post auction
+router.post('/post-auction', upload.single('image'), (req, res) => {
+    var auction = new auctionModel();
+    auction.name = req.body.name;
+    auction.initialbid = req.body.initialbid;
+    auction.description = req.body.description;
+    auction.img = req.file.filename;
+    console.log("auction:", auction);
+    auction.save((err, doc)=>{
+        if (!err) {
+            console.log("Auction saved successfully");
+            res.redirect('/auctions');
+        }
+        else {
+            console.log(err);
+        }
+    })
+});
 
 // Exports
 module.exports = router;
