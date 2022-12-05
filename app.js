@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var app = express();
 var fs = require('fs');
+var cookieParser = require('cookie-parser')
 require('dotenv/config');
 
 // Connect to db
@@ -18,6 +19,9 @@ db.once('open', function() {
 // EJS setup
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+
+//Cookies setup
+app.use(cookieParser());
 
 // View engine setup
 app.set('views', path.join(__dirname, 'views'));

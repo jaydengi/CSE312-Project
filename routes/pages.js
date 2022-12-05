@@ -34,6 +34,14 @@ var auctionSchema = new mongoose.Schema({
 });
 auctionModel = mongoose.model('auction', auctionSchema);
 
+//Cookie Schema
+var cookieSchema = new mongoose.Schema({
+    hashedToken: String,
+    username: String,
+    salt: String
+})
+cookieModel = mongoose.model('cookie', cookieSchema);
+
 // Multer setup
 var upload = multer ({
     storage : multer.diskStorage ({
@@ -140,6 +148,27 @@ router.post('/login', urlencodedParser, function(req, res) {
             if (crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex') === user['password']) {
                 console.log("Succesfully Logged In!")
                 //Make an authentication cookie
+                var array = new Uint32Array(10);
+                var tokenV1 = 'user' + crypto.getRandomValues(array); //Original Token
+                var salt = crypto.randomBytes(16).toString('hex') //Salt
+                //Adding info to db
+                var cookie_db = new cookieModel()
+                cookie_db.username = username
+                cookie_db.salt = salt
+                cookie_db.hashedToken = crypto.pbkdf2Sync(tokenV1, salt, 1000, 64, 'sha512').toString('hex');
+                cookie_db.save((err, doc)=>{
+                    if (!err) {
+                        console.log("Succesfully Added in Cookie DB!");
+                    }
+                    else {
+                        console.log(err);
+                    }
+                })
+                res.cookie('token', tokenV1, {
+                    expires: new Date('01 12 2023'),
+                    httpOnly: true,
+                    sameSite: 'lax'
+                })
                 res.redirect('/items')
             }
             else {
@@ -148,11 +177,6 @@ router.post('/login', urlencodedParser, function(req, res) {
         } 
     }); 
 }); 
-
-//Make post request for login
-//Search database for the username and password 
-//If they match make a authentication cookie and send to item listing page
-//If not say wrong login information and send 
 
 // Auctions Page
 router.get('/auctions', function(req, res) {
