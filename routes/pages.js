@@ -165,14 +165,14 @@ router.get('/auctions', function(req, res) {
         })
 });
 
-// Add auction Page
+// Add Auction Page
 router.get('/add-auction', function(req, res) {
     res.render('addauction', {
         title: 'Add Auction'
     });
 });
 
-// Post auction
+// Post Auction Page
 router.post('/post-auction', upload.single('image'), (req, res) => {
     var auction = new auctionModel();
     auction.name = req.body.name;

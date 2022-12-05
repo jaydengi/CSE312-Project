@@ -11,7 +11,7 @@
 <main>
   <div class="jumbotron">
     <h1>Item Listings</h1>
-    <a class="nav-link" href="/add-item">List item</a>
+    <a class="nav-link" href="/add-item">List item</a><br>
 
       <div id="items-div">
         <% item.forEach(function(item) { %>
@@ -20,12 +20,13 @@
               <div>
                   <h5><%= item.name %></h5>
                   <p><%= item.price %></p>
-                  <p><%= item.description %></p><br>
+                  <p><%= item.description %></p>
+                  <button type="button" onclick=Add to cart</button>
               </div>
           </div>
           <% }) %>
       </div>
-      
+
   </div>
 </main>
 <footer>

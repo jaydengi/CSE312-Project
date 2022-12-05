@@ -11,16 +11,20 @@
 <main>
   <div class="jumbotron">
     <h1>Auctions</h1>
-    <a class="nav-link" href="/add-auction">List auction</a>
+    <a class="nav-link" href="/add-auction">List auction</a><br>
 
     <div id="auctions-div">
         <% auction.forEach(function(auction) { %>
           <div>
               <img src="<%=auction.img%>" height="250">
               <div>
-                  <h5><%= auction.name %></h5>
-                  <p><%= auction.initialbid %></p>
-                  <p><%= auction.description %></p><br>
+                <h5><%= auction.name %></h5>
+                <p>Starting bid: <%= auction.initialbid %></p>
+                <p><%= auction.description %></p><br>
+                <input type ="text" id="input">
+                <button> type="button" id="submit">Submit Bid</button>
+                <p id="bids"></p>
+
               </div>
           </div>
           <% }) %>
