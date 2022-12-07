@@ -181,6 +181,11 @@ router.post('/login', urlencodedParser, function(req, res) {
                     httpOnly: true,
                     sameSite: 'lax'
                 })
+                res.cookie('username', username, {
+                    expires: new Date('01 12 2023'),
+                    httpOnly: false,
+                    sameSite: 'lax'
+                })
                 res.redirect('/items')
             }
             else {
