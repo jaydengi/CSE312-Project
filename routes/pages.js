@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser')
+var cookieParser = require('cookie-parser');
 var path = require('path');
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 var mongoose = require('mongoose');
@@ -42,6 +43,12 @@ var cookieSchema = new mongoose.Schema({
 })
 cookieModel = mongoose.model('cookie', cookieSchema);
 
+var cartSchema = new mongoose.Schema({
+    username: String,
+    item_ids: Array
+})
+cartModel = mongoose.model('cart', cartSchema);
+
 // Multer setup
 var upload = multer ({
     storage : multer.diskStorage ({
@@ -52,14 +59,19 @@ var upload = multer ({
             callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
         }
     })
-})
+});
+
 
 // Homepage
 router.get('/', function(req, res) {
+    const cookies = req.cookies
+    console.log(cookies)
     res.render('index', {
         title: 'Home'
     });
 });
+
+
 
 // Item Listings Page
 router.get('/items', function(req, res) {

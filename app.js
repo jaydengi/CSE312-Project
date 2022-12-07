@@ -41,6 +41,7 @@ app.use('/', pages);
 app.use('/add-item', pages);
 app.use('/add-auction', pages);
 
+
 // Start the server
 var port = 3000;
 app.listen(port, function() {
