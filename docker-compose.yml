@@ -9,8 +9,11 @@ services:
       - mongo_db:/data/db
 
   # Node API service
+  #Changed ports from 3000:3000 to 8080:3000
   api:
     build: .
+    expose: 
+      - "3000" # Open the port to other Docker containers
     ports:
       - '3000:3000'
     environment:
