@@ -24,7 +24,7 @@
                 <input type="text" id="input" placeholder="0.00" />
                   <button
                     type="button"
-                    onclick="sendMessage(document.getElementById('input').value)"
+                    onclick="sendMessage(document.getElementById('input').value, '<%=auction._id%>')"
                     id="submit"
                   >
                     Submit Bid
@@ -55,8 +55,16 @@
     console.log("message from server", event.data);
   });
 
-  const sendMessage = (bid) => {
-    socket.send(bid);
+  const sendMessage = (bid, id) => {
+    
+    console.log("bid inside sendmessage: ",bid)
+    
+    console.log("id: ",id)
+    var ret = {
+      bid: bid,
+      id: id
+    }
+    socket.send(ret);
   };
 </script>
 </html>
