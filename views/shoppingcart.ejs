@@ -11,7 +11,23 @@
 
 <main>
   <div class="jumbotron">
+    <h1>Shopping cart</h1>
+    <div id="cart-div">
+      <% item.forEach(function(item) { %>
+        <div>
+            <img src="<%=item.img%>" height="250">
+            <div>
+                <h5><%= item.name %></h5>
+                <p><%= item.price %></p>
+                <p><%= item.description %></p>
+                <button type="button" onclick="alert('Hello world!')">Add to cart</button>
+            </div>
+        </div>
+        <% }) %>
+    </div>
+
   </div>
+
 </main>
 
 <footer>

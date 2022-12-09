@@ -7,7 +7,10 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false })
 var mongoose = require('mongoose');
 var multer = require('multer');
 var crypto = require('crypto');
+const e = require('express');
 require('dotenv/config');
+
+const client_cookies = {};
 
 // Item schema
 var itemSchema = new mongoose.Schema({
@@ -64,7 +67,7 @@ var upload = multer ({
 
 // Homepage
 router.get('/', function(req, res) {
-    const cookies = req.cookies
+    client_cookies = req.cookies;
     console.log(cookies)
     res.render('index', {
         title: 'Home'
@@ -86,10 +89,69 @@ router.get('/items', function(req, res) {
 
 // Shopping Cart Page
 router.get('/shopping-cart', function(req, res) {
+    if(client_cookies.has('username'){
+        cartModel.find({username : client_cookies['username']} , function(err, usercart){
+            if(usercart == null){
+                console.log("there is no cart for this user");
+            }else{
+                
+            }
+        })
+    
+    }
+    
+
     res.render('shoppingcart', {
         title: 'Shopping Cart'
     });
 });
+
+
+router.get('/add-cart',function(req,res){
+    cartModel.find({username : client_cookies['username']} , function(err, usercart){
+        if (usercart == null){
+            var new_item = req;
+            var cart = new cartModel();
+            cart.username = client_cookies['username'];
+            cart.item_ids = [new_item];
+            cart.save((err,doc)=>{
+                if (!err) {
+                    //cart added to database with item in cart
+                }
+                else {
+                    console.log(err);
+                }
+            })
+
+        }
+        else{
+            var item_list = usercart['item_ids']
+            var new_item = req;
+            var in_list = False;
+            for(var i = 0; i < item_list.length; i++){
+                if(new_item == item_list[i]){
+                    in_list = True;
+                    break;
+                }
+            }
+            if(in_list == False){
+                item_list.append(new_item);
+                usercart.item_ids = item_list;
+                usercart.save((err,doc)=>{
+                    if (!err) {
+                        //cart added to database with item in cart
+                    }
+                    else {
+                        console.log(err);
+                    }
+                })
+            }else{
+                console.log("It is already in the cart");
+            }
+
+        }
+    })
+})
 
 // Add Item Page
 router.get('/add-item', function(req, res) {
