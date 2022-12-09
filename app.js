@@ -59,11 +59,12 @@ wsServer.on("connection", (socket) => {
   console.log("connect is on");
   socket.on("message", (message) => {
     //check if bid is higher than the current highest bid for the auction
+    var json = message.toString();
+    var obj = JSON.parse(json);
     var bid = new bidModel();
     bid.username = ""; //need to get username from the auction still
-    bid.itemid = message.id; //need to get itemid from the auction still
-    console.log("messageObj: ", message);
-    bid.amount = parseInt(message.bid);
+    bid.itemid = obj.id; //need to get itemid from the auction still
+    bid.amount = obj.bid;
     console.log("bid:", bid);
     //update the highest bid on the auction
     bid.save((err, doc) => {

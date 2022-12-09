@@ -61,10 +61,10 @@
     
     console.log("id: ",id)
     var ret = {
-      bid: bid,
+      bid: parseInt(bid),
       id: id
     }
-    socket.send(ret);
+    socket.send(JSON.stringify(ret));
   };
 </script>
 </html>
