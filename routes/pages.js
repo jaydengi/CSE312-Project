@@ -60,13 +60,13 @@ router.get('/', function(req, res) {
     for (x in req.cookies){
         cookiePresent.push(x)
     }
-    if (cookiePresent.length == 0){
+    if (cookiePresent.length == 0){//If cookie is not present
         res.render('index', {
             title: 'Home',
             username: ""
         })
     }
-    else {  
+    else {//If cookie is present
         res.render('index', {
             title: 'Home',
             username: req.cookies.username
@@ -82,7 +82,8 @@ router.get('/items', function(req, res) {
     if (cookiePresent.length == 0){
         res.send("Register an account and login, to unlock feature!")
     }
-    else {  
+    else {
+        
     itemModel.find()
         .then(function(doc){
             res.render('items', {
@@ -109,21 +110,31 @@ router.get('/add-item', function(req, res) {
 
 // Post Item
 router.post('/post-item', upload.single('image'), (req, res) => {
-    var item = new itemModel();
-    item.name = req.body.name;
-    item.price = req.body.price;
-    item.description = req.body.description;
-    item.img = req.file.filename;
-    console.log("item:", item);
-    item.save((err, doc)=>{
-        if (!err) {
-            console.log("Item saved successfully");
-            res.redirect('/items');
-        }
-        else {
-            console.log(err);
-        }
-    })
+    var cookiePresent = []
+    for (x in req.cookies){
+        cookiePresent.push(x)
+    }
+    if (cookiePresent.length == 0){
+        res.send("You can't log out if you weren't logged in silly!")
+    }
+    else{
+        var item = new itemModel();
+        item.name = req.body.name;
+        item.price = req.body.price;
+        item.description = req.body.description;
+        item.img = req.file.filename;
+        console.log("item:", item);
+        item.save((err, doc)=>{
+            if (!err) {
+                console.log("Item saved successfully");
+                res.redirect('/items');
+            }
+            else {
+                console.log(err);
+            }
+        })
+    } 
+    
 });
 
 // Registration Page
@@ -158,7 +169,7 @@ router.post('/logout', function(req, res) {
         cookiePresent.push(x)
     }
     if (cookiePresent.length == 0){
-        res.send("You were never logged in!")
+        res.send("You can't log out if you weren't logged in silly!")
     } 
     else {
         console.log("Cookie cleared!")
@@ -167,7 +178,6 @@ router.post('/logout', function(req, res) {
         res.redirect('/login')
     }
 });
-
 
 //Login Page
 router.get('/login', function(req, res) {
