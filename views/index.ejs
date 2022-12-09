@@ -1,29 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <%- include('head'); %>
-</head>
-<body class="container">
+  <head>
+    <%- include('head'); %>
+  </head>
+  <body class="container">
+    <header><%- include('header'); %></header>
 
-<header>
-  <%- include('header'); %>
-</header>
+    <main>
+      <div class="jumbotron">
+        <h1>Welcome!</h1>
+        <input type="text" id="input" placeholder="0.00" />
+        <button
+          type="button"
+          onclick="sendMessage(document.getElementById('input').value)"
+          id="submit"
+        >
+          Submit Bid
+        </button>
+        <p id="bids"></p>
+      </div>
+    </main>
 
-<main>
-  <div class="jumbotron">
-    <h1>Welcome!</h1>
-    <h1><%= username %></h1>
-  </div>
+    <footer><%- include('footer'); %></footer>
+  </body>
+  <script>
+    const socket = new WebSocket("ws://localhost:3000");
 
-  <form action="/logout" method="post">
-  <input name="logout" id="logout" value="logout" type="submit" />
-  </form>
+    socket.addEventListener("open", function (event) {
+      console.log("Connected to WS Server");
+    });
 
-</main>
+    socket.addEventListener("message", function (event) {
+      console.log("message from server", event.data);
+    });
 
-<footer>
-  <%- include('footer'); %>
-</footer>
-
-</body>
+    const sendMessage = (bid) => {
+      socket.send(bid);
+    };
+  </script>
 </html>
