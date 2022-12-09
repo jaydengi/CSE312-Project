@@ -10,7 +10,6 @@ var crypto = require('crypto');
 const e = require('express');
 require('dotenv/config');
 
-const client_cookies = {};
 
 // Item schema
 var itemSchema = new mongoose.Schema({
@@ -67,17 +66,36 @@ var upload = multer ({
 
 // Homepage
 router.get('/', function(req, res) {
-    client_cookies = req.cookies;
-    console.log(cookies)
-    res.render('index', {
-        title: 'Home'
-    });
-});
+    var cookiePresent = []
+    for (x in req.cookies){
+        cookiePresent.push(x)
+    }
+    if (cookiePresent.length == 0){//If cookie is not present
+        res.render('index', {
+            title: 'Home',
+            username: ""
+        })
+    }
+    else {//If cookie is present
+        res.render('index', {
+            title: 'Home',
+            username: req.cookies.username
+        })
+}});
 
 
 
 // Item Listings Page
 router.get('/items', function(req, res) {
+    var cookiePresent = []
+    for (x in req.cookies){
+        cookiePresent.push(x)
+    }
+    if (cookiePresent.length == 0){
+        res.send("Register an account and login, to unlock feature!")
+    }
+    else {
+        
     itemModel.find()
         .then(function(doc){
             res.render('items', {
@@ -85,35 +103,55 @@ router.get('/items', function(req, res) {
                 item : doc
             })
         })
+    }
 });
 
 // Shopping Cart Page
 router.get('/shopping-cart', function(req, res) {
-    if(client_cookies.has('username'){
+
+    var client_cookies = req.cookies;
+
+    if(client_cookies.hasOwnProperty('username')){
         cartModel.find({username : client_cookies['username']} , function(err, usercart){
-            if(usercart == null){
+            if(usercart.length == 0){
                 console.log("there is no cart for this user");
+                res.render('shoppingcart', {
+                    title: 'Shopping Cart',
+                    item : []
+                });
             }else{
-                
+                var item_list = usercart['item_ids'];
+
+                res.render('shoppingcart', {
+                    title: 'Shopping Cart',
+                    item: item_list
+
+                })
             }
         })
     
     }
     
-
-    res.render('shoppingcart', {
-        title: 'Shopping Cart'
-    });
 });
 
 
-router.get('/add-cart',function(req,res){
+router.post('/add-cart',function(req,res){
+    console.log("PASDOASDs")
+    var client_cookies = req.cookies;
     cartModel.find({username : client_cookies['username']} , function(err, usercart){
-        if (usercart == null){
-            var new_item = req;
+        if (usercart.length == 0){
+            var new_item;
+            itemModel.find({_id: req}, function(err, item){
+                if(item == null){
+                    console.log("item not found")
+                }else{
+                    new_item = item;
+                }
+            })
             var cart = new cartModel();
             cart.username = client_cookies['username'];
             cart.item_ids = [new_item];
+            console.log(cart);
             cart.save((err,doc)=>{
                 if (!err) {
                     //cart added to database with item in cart
@@ -126,10 +164,17 @@ router.get('/add-cart',function(req,res){
         }
         else{
             var item_list = usercart['item_ids']
-            var new_item = req;
+            var new_item;
+            itemModel.find({_id: req}, function(err, item){
+                if(item == null){
+                    console.log("item not found")
+                }else{
+                    new_item = item;
+                }
+            })
             var in_list = False;
             for(var i = 0; i < item_list.length; i++){
-                if(new_item == item_list[i]){
+                if(new_item._id == item_list[i]._id){
                     in_list = True;
                     break;
                 }
@@ -162,21 +207,31 @@ router.get('/add-item', function(req, res) {
 
 // Post Item
 router.post('/post-item', upload.single('image'), (req, res) => {
-    var item = new itemModel();
-    item.name = req.body.name;
-    item.price = req.body.price;
-    item.description = req.body.description;
-    item.img = req.file.filename;
-    console.log("item:", item);
-    item.save((err, doc)=>{
-        if (!err) {
-            console.log("Item saved successfully");
-            res.redirect('/items');
-        }
-        else {
-            console.log(err);
-        }
-    })
+    var cookiePresent = []
+    for (x in req.cookies){
+        cookiePresent.push(x)
+    }
+    if (cookiePresent.length == 0){
+        res.send("You can't log out if you weren't logged in silly!")
+    }
+    else{
+        var item = new itemModel();
+        item.name = req.body.name;
+        item.price = req.body.price;
+        item.description = req.body.description;
+        item.img = req.file.filename;
+        console.log("item:", item);
+        item.save((err, doc)=>{
+            if (!err) {
+                console.log("Item saved successfully");
+                res.redirect('/items');
+            }
+            else {
+                console.log(err);
+            }
+        })
+    } 
+    
 });
 
 // Registration Page
@@ -203,6 +258,23 @@ router.post('/register', urlencodedParser, function(req, res) {
         }
     })
 })
+
+//Logout Button
+router.post('/logout', function(req, res) {
+    var cookiePresent = []
+    for (x in req.cookies){
+        cookiePresent.push(x)
+    }
+    if (cookiePresent.length == 0){
+        res.send("You can't log out if you weren't logged in silly!")
+    } 
+    else {
+        console.log("Cookie cleared!")
+        res.clearCookie('token')
+        res.clearCookie('username')
+        res.redirect('/login')
+    }
+});
 
 //Login Page
 router.get('/login', function(req, res) {
@@ -245,7 +317,7 @@ router.post('/login', urlencodedParser, function(req, res) {
                 })
                 res.cookie('username', username, {
                     expires: new Date('01 12 2023'),
-                    httpOnly: false,
+                    httpOnly: true,
                     sameSite: 'lax'
                 })
                 res.redirect('/items')
