@@ -58,13 +58,13 @@ app.use("/add-auction", pages);
 wsServer.on("connection", (socket) => {
   console.log("connect is on");
   socket.on("message", (message) => {
-    //log the received message and send it back to the client
+    //check if bid is higher than the current highest bid for the auction
     var bid = new bidModel();
-    bid.username = ""; //need to get username still
-    bid.itemid = ""; //need to get itemid still
+    bid.username = ""; //need to get username from the auction still
+    bid.itemid = ""; //need to get itemid from the auction still
     bid.amount = parseInt(message);
     console.log("bid:", bid);
-
+    //update the highest bid on the auction
     bid.save((err, doc) => {
       if (!err) {
         console.log("bid saved successfully");

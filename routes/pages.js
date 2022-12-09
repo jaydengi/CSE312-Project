@@ -29,6 +29,7 @@ loginModel = mongoose.model('login', loginSchema);
 var auctionSchema = new mongoose.Schema({
     name: String,
     initialbid: Number,
+    highestbid: Number,
     description: String,
     img: String
 });
@@ -255,6 +256,7 @@ router.post('/post-auction', upload.single('image'), (req, res) => {
     var auction = new auctionModel();
     auction.name = req.body.name;
     auction.initialbid = req.body.initialbid;
+    auction.highestbid =  req.body.initialbid;
     auction.description = req.body.description;
     auction.img = req.file.filename;
     console.log("auction:", auction);
