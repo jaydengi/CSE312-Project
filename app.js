@@ -16,7 +16,7 @@ const wsServer = new ws.Server({ server });
 //bidSchema
 var bidSchema = new mongoose.Schema({
   username: String,
-  item: String,
+  itemid: String,
   amount: Number,
 });
 bidModel = mongoose.model("bid", bidSchema);
@@ -60,6 +60,8 @@ wsServer.on("connection", (socket) => {
   socket.on("message", (message) => {
     //log the received message and send it back to the client
     var bid = new bidModel();
+    bid.username = ""; //need to get username still
+    bid.itemid = ""; //need to get itemid still
     bid.amount = parseInt(message);
     console.log("bid:", bid);
 
