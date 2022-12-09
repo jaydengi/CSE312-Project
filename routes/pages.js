@@ -56,10 +56,22 @@ var upload = multer ({
 
 // Homepage
 router.get('/', function(req, res) {
-    res.render('index', {
-        title: 'Home'
-    });
-});
+    var cookiePresent = []
+    for (x in req.cookies){
+        cookiePresent.push(x)
+    }
+    if (cookiePresent.length == 0){
+        res.render('index', {
+            title: 'Home',
+            username: ""
+        })
+    }
+    else {  
+        res.render('index', {
+            title: 'Home',
+            username: req.cookies.username
+        })
+}});
 
 // Item Listings Page
 router.get('/items', function(req, res) {
@@ -138,6 +150,24 @@ router.post('/register', urlencodedParser, function(req, res) {
         }
     })
 })
+
+//Logout Button
+router.post('/logout', function(req, res) {
+    var cookiePresent = []
+    for (x in req.cookies){
+        cookiePresent.push(x)
+    }
+    if (cookiePresent.length == 0){
+        res.send("You were never logged in!")
+    } 
+    else {
+        console.log("Cookie cleared!")
+        res.clearCookie('token')
+        res.clearCookie('username')
+        res.redirect('/login')
+    }
+});
+
 
 //Login Page
 router.get('/login', function(req, res) {

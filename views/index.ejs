@@ -12,7 +12,13 @@
 <main>
   <div class="jumbotron">
     <h1>Welcome!</h1>
+    <h1><%= username %></h1>
   </div>
+
+  <form action="/logout" method="post">
+  <input name="logout" id="logout" value="logout" type="submit" />
+  </form>
+
 </main>
 
 <footer>
