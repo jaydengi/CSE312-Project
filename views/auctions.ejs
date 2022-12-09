@@ -21,9 +21,16 @@
                 <h5><%= auction.name %></h5>
                 <p>Starting bid: <%= auction.initialbid %></p>
                 <p><%= auction.description %></p><br>
-                <input type ="text" id="input" placeholder="0.00">
-                <button type="button" id="submit">Submit Bid</button>
-                <p id="bids"></p>
+                <input type="text" id="input" placeholder="0.00" />
+                  <button
+                    type="button"
+                    onclick="sendMessage(document.getElementById('input').value)"
+                    id="submit"
+                  >
+                    Submit Bid
+                  </button>
+                  <p id="bids"></p>
+                </div>
 
               </div>
           </div>
@@ -35,5 +42,21 @@
 <footer>
     <%- include('footer'); %>
 </footer>
+
 </body>
+<script>
+  const socket = new WebSocket("ws://localhost:3000");
+
+  socket.addEventListener("open", function (event) {
+    console.log("Connected to WS Server");
+  });
+
+  socket.addEventListener("message", function (event) {
+    console.log("message from server", event.data);
+  });
+
+  const sendMessage = (bid) => {
+    socket.send(bid);
+  };
+</script>
 </html>
