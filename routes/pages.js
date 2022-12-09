@@ -63,6 +63,14 @@ router.get('/', function(req, res) {
 
 // Item Listings Page
 router.get('/items', function(req, res) {
+    var cookiePresent = []
+    for (x in req.cookies){
+        cookiePresent.push(x)
+    }
+    if (cookiePresent.length == 0){
+        res.send("Register an account and login, to unlock feature!")
+    }
+    else {  
     itemModel.find()
         .then(function(doc){
             res.render('items', {
@@ -70,6 +78,7 @@ router.get('/items', function(req, res) {
                 item : doc
             })
         })
+    }
 });
 
 // Shopping Cart Page
@@ -171,7 +180,7 @@ router.post('/login', urlencodedParser, function(req, res) {
                 })
                 res.cookie('username', username, {
                     expires: new Date('01 12 2023'),
-                    httpOnly: false,
+                    httpOnly: true,
                     sameSite: 'lax'
                 })
                 res.redirect('/items')
