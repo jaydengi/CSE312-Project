@@ -13,11 +13,11 @@ services:
   api:
     build: .
     expose: 
-      - "8080" # Open the port to other Docker containers
+      - "3000" # Open the port to other Docker containers
     ports:
-      - '8080:8080'
+      - '3000:3000'
     environment:
-      PORT: 8080
+      PORT: 3000
       MONGODB_URI: mongodb://mongo_db:27017
       DB_NAME: my_db
       NAME: idk
