@@ -237,12 +237,20 @@ router.post("/login", urlencodedParser, function (req, res) {
 
 // Auctions Page
 router.get("/auctions", function (req, res) {
+  var cookiePresent = [];
+  for (x in req.cookies) {
+    cookiePresent.push(x);
+  }
+  if (cookiePresent.length == 0) {
+    res.send("You can't log out if you weren't logged in silly!");
+  } else {
   auctionModel.find().then(function (doc) {
     res.render("auctions", {
       title: "Auctions",
       auction: doc,
     });
   });
+}
 });
 
 // Add Auction Page
@@ -254,6 +262,13 @@ router.get("/add-auction", function (req, res) {
 
 // Post Auction Page
 router.post("/post-auction", upload.single("image"), (req, res) => {
+  var cookiePresent = [];
+  for (x in req.cookies) {
+    cookiePresent.push(x);
+  }
+  if (cookiePresent.length == 0) {
+    res.send("You can't log out if you weren't logged in silly!");
+  } else {
   var auction = new auctionModel();
   auction.name = req.body.name;
   auction.initialbid = req.body.initialbid;
@@ -269,6 +284,7 @@ router.post("/post-auction", upload.single("image"), (req, res) => {
       console.log(err);
     }
   });
+}
 });
 
 // Exports
