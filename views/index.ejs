@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <%- include('head'); %>
+  </head>
+  <body class="container">
+    <header><%- include('header'); %></header>
 <head>
   <%- include('head'); %>
 </head>
@@ -10,21 +15,17 @@
   <%- include('header'); %>
 </header>
 
-<main>
-  <div class="jumbotron">
-    <h1>Welcome!</h1>
-    <h1><%= username %></h1>
-  </div>
+    <main>
+      <div class="jumbotron">
+        <h1>Welcome! </h1>
+        <h1><%= username %></h1>
 
-  <form action="/logout" method="post">
-  <input name="logout" id="logout" value="logout" type="submit" />
-  </form>
+        <form action="/logout" method="post">
+          <input name="logout" id="logout" value="logout" type="submit" />
+        </form>
+    </main>
 
-</main>
-
-<footer>
-  <%- include('footer'); %>
-</footer>
-
-</body>
+    <footer><%- include('footer'); %></footer>
+  </body>
+  
 </html>

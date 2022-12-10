@@ -20,10 +20,19 @@
               <div>
                 <h5><%= auction.name %></h5>
                 <p>Starting bid: <%= auction.initialbid %></p>
+                <p>Highest bid: <%= auction.highestbid %></p>
                 <p><%= auction.description %></p><br>
-                <input type ="text" id="input" placeholder="0.00">
-                <button type="button" id="submit">Submit Bid</button>
-                <p id="bids"></p>
+                <input type="text" id="input" placeholder="0.00" />
+                  <button
+                    type="button"
+                    onclick="sendMessage(document.getElementById('input').value, '<%=auction._id%>')"
+                    id="submit"
+                  >
+                    Submit Bid
+                  </button>
+                  <p id="bids">
+                  </p>
+                </div>
 
               </div>
           </div>
@@ -35,5 +44,33 @@
 <footer>
     <%- include('footer'); %>
 </footer>
+
 </body>
+<script>
+  const socket = new WebSocket("ws://localhost:3000");
+
+  socket.addEventListener("open", function (event) {
+    console.log("Connected to WS Server");
+  });
+
+  socket.addEventListener("message", function (event) {
+    console.log("message from server", event.data);
+    bid = JSON.parse(event.data)
+    console.log(bid)
+    console.log(event.data)
+    document.getElementById("bids").innerHTML += bid.bid+"<br/>"
+  });
+
+  const sendMessage = (bid, id) => {
+    
+    console.log("bid inside sendmessage: ",bid)
+    
+    console.log("id: ",id)
+    var ret = {
+      bid: parseInt(bid),
+      id: id
+    }
+    socket.send(JSON.stringify(ret));
+  };
+</script>
 </html>
