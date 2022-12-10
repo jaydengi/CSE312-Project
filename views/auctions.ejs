@@ -20,6 +20,7 @@
               <div>
                 <h5><%= auction.name %></h5>
                 <p>Starting bid: <%= auction.initialbid %></p>
+                <p>Highest bid: <%= auction.highestbid %></p>
                 <p><%= auction.description %></p><br>
                 <input type="text" id="input" placeholder="0.00" />
                   <button
@@ -29,7 +30,8 @@
                   >
                     Submit Bid
                   </button>
-                  <p id="bids"></p>
+                  <p id="bids">
+                  </p>
                 </div>
 
               </div>
@@ -53,6 +55,10 @@
 
   socket.addEventListener("message", function (event) {
     console.log("message from server", event.data);
+    bid = JSON.parse(event.data)
+    console.log(bid)
+    console.log(event.data)
+    document.getElementById("bids").innerHTML += bid.bid+"<br/>"
   });
 
   const sendMessage = (bid, id) => {

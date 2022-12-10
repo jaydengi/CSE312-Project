@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 services:
   # MongoDB services
   mongo_db:
@@ -12,10 +12,10 @@ services:
   #Changed ports from 3000:3000 to 8080:3000
   api:
     build: .
-    expose: 
+    expose:
       - "3000" # Open the port to other Docker containers
     ports:
-      - '3000:3000'
+      - "3000:3000"
     environment:
       PORT: 3000
       MONGODB_URI: mongodb://mongo_db:27017

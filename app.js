@@ -74,8 +74,8 @@ wsServer.on("connection", (socket) => {
         console.log(err);
       }
     });
-    console.log("received: %s", message);
-    socket.send(`Hello, you sent -> ${message}`);
+    console.log("received: %s", bid);
+    socket.send(JSON.stringify(obj));
   });
 
   //send immediatly a feedback to the incoming connection
