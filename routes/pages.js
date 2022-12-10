@@ -52,12 +52,6 @@ var cartSchema = new mongoose.Schema({
 })
 cartModel = mongoose.model('cart', cartSchema);
 
-var cartSchema = new mongoose.Schema({
-    username: String,
-    item_ids: Array
-})
-cartModel = mongoose.model('cart', cartSchema);
-
 // Multer setup
 var upload = multer({
   storage: multer.diskStorage({
@@ -140,8 +134,8 @@ router.get("/shopping-cart", function (req, res) {
                         }
                     }
                   res.render("shoppingcart", {
-                    title: "Shopping Cart",,
-                        item: item_list
+                    title: "Shopping Cart",
+                    item: item_list
                     })
               });
 
@@ -190,8 +184,11 @@ router.post('/add-cart',function(req,res){
                 }
             }
             if(in_list == false){
+                console.log("KEKW");
+                console.log(new_item);
                 item_list.push(new_item);
                 usercart.item_ids = item_list;
+                console.log(usercart);
                 usercart.save((err,doc)=>{
                     if (!err) {
                         //cart added to database with item in cart
