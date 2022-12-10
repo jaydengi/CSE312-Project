@@ -120,13 +120,24 @@ router.get('/shopping-cart', function(req, res) {
                     item : []
                 });
             }else{
-                var item_list = usercart['item_ids'];
+                let cart = usercart[0]
+                var item_ids_list = new Set(cart['item_ids']);
+                var item_list = [];
+                itemModel.find().then(function(items){
+                    for (let i = 0; i < items.length; i++) {
+                        let items_id = items[i]._id.toString();
+                        if(item_ids_list.has(items_id)){
+                            item_list.push(items[i]);
+                        }
+                    }
+                    res.render('shoppingcart', {
+                        title: 'Shopping Cart',
+                        item: item_list
+                    })
+                });
 
-                res.render('shoppingcart', {
-                    title: 'Shopping Cart',
-                    item: item_list
 
-                })
+                
             }
         })
     
@@ -134,53 +145,43 @@ router.get('/shopping-cart', function(req, res) {
     
 });
 
-
+const ObjectId = require('mongodb').ObjectId;
 router.post('/add-cart',function(req,res){
     console.log("PASDOASDs")
     var client_cookies = req.cookies;
+    console.log(client_cookies)
     cartModel.find({username : client_cookies['username']} , function(err, usercart){
+        console.log(usercart)
         if (usercart.length == 0){
-            var new_item;
-            itemModel.find({_id: req}, function(err, item){
-                if(item == null){
-                    console.log("item not found")
-                }else{
-                    new_item = item;
-                }
-            })
+            var id_item = req.body.id;
+            console.log("HELLO");
+            console.log(id_item);
             var cart = new cartModel();
-            cart.username = client_cookies['username'];
-            cart.item_ids = [new_item];
-            console.log(cart);
-            cart.save((err,doc)=>{
-                if (!err) {
-                    //cart added to database with item in cart
-                }
-                else {
-                    console.log(err);
-                }
+                    cart.username = client_cookies['username'];
+                    cart.item_ids = [id_item];
+                    console.log(cart);
+                    cart.save((err,doc)=>{
+                        if (!err) {
+                            //cart added to database with item in cart
+                        }
+                        else {
+                            console.log(err);
+                        }
             })
-
         }
         else{
-            var item_list = usercart['item_ids']
-            var new_item;
-            itemModel.find({_id: req}, function(err, item){
-                if(item == null){
-                    console.log("item not found")
-                }else{
-                    new_item = item;
-                }
-            })
-            var in_list = False;
+            var item_list = usercart[0]['item_ids']
+            var new_item = req.body.id;
+            var in_list = false;
+
             for(var i = 0; i < item_list.length; i++){
-                if(new_item._id == item_list[i]._id){
-                    in_list = True;
+                if(new_item == item_list[i]){
+                    in_list = true;
                     break;
                 }
             }
-            if(in_list == False){
-                item_list.append(new_item);
+            if(in_list == false){
+                item_list.push(new_item);
                 usercart.item_ids = item_list;
                 usercart.save((err,doc)=>{
                     if (!err) {

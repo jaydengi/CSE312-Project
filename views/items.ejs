@@ -8,6 +8,19 @@
 <header>
   <%- include('header'); %>
 </header>
+
+<script>
+  function sendPostRequest() {
+    var button = document.getElementById("button-id");
+    var id_item = document.getElementById("iddd").innerText;
+    var request = new XMLHttpRequest();
+    request.open("POST", '/add-cart');
+    request.setRequestHeader("Content-Type", "application/json");
+    var data = {id: id_item};
+    request.send(JSON.stringify(data));
+  };
+</script>
+
 <main>
   <div class="jumbotron">
     <h1>Item Listings</h1>
@@ -19,9 +32,10 @@
               <img src="<%=item.img%>" height="250">
               <div>
                   <h5><%= item.name %></h5>
+                  <p id="iddd"><%= item._id %></p>
                   <p><%= item.price %></p>
                   <p><%= item.description %></p>
-                  <button type="button" onclick="">Add to cart</button>
+                  <button type="button" onclick="sendPostRequest();">Add to cart</button>
               </div>
           </div>
           <% }) %>
